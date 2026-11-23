@@ -65,7 +65,7 @@ jobs:
 
       - name: Install web dependencies & run Vite unit tests
         run: |
-          if [ -f package-lock.json ]; then npm ci; else npm install; fi
+          npm install --legacy-peer-deps
           npx --yes tsx --test src/utils/controllerMath.test.ts
           npx --yes tsx --test src/utils/companionBridge.test.ts
           npm run lint
