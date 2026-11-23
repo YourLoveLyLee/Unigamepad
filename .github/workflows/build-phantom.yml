@@ -27,7 +27,7 @@ jobs:
         run: dotnet build PhantomCompanion/PhantomCompanion.sln --configuration Release --no-restore
 
       - name: Run xUnit tests
-        run: dotnet test PhantomCompanion/PhantomCompanion.sln --configuration Release --no-build --verbosity normal
+        run: dotnet test PhantomCompanion/PhantomCompanion.sln --configuration Release --no-build --verbosity minimal
 
       - name: Publish self-contained PhantomCompanion win-x64
         run: >
