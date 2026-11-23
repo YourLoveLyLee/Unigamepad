@@ -47,7 +47,7 @@ public sealed class InputCoreTests
     [Fact]
     public void ProtocolParser_ParsesValidButtonAndJoystickMessages()
     {
-        var btnJson = Encoding.UTF8.GetBytes("{\"type\":\"button\",\"target\":\"L1\",\"pressed\":true,\"timestamp\":123456}");
+        var btnJson = Encoding.UTF8.GetBytes("{\"type\":\"button\",\"button\":\"L1\",\"pressed\":true,\"timestamp\":123456}");
         Assert.True(ProtocolParser.TryParse(btnJson, out var btnEv, out var btnErr), btnErr);
         Assert.Equal(ControllerEventType.Button, btnEv.Type);
         Assert.Equal("L1", btnEv.Target);
