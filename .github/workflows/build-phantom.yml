@@ -85,6 +85,8 @@ jobs:
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
+        with:
+          items: platform-34,build-tools-34.0.0,cmdline-tools-latest
 
       - name: Setup Gradle 8.7 & Build Debug APK
         uses: gradle/actions/setup-gradle@v4
