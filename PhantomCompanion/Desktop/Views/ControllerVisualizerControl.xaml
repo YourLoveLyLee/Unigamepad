@@ -1,0 +1,99 @@
+<UserControl x:Class="PhantomCompanion.Desktop.Views.ControllerVisualizerControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             MinHeight="290" MinWidth="620">
+    <Border Background="#0E1015" BorderBrush="#252932" BorderThickness="1" CornerRadius="12" Padding="20">
+        <Viewbox Stretch="Uniform">
+            <Canvas Width="640" Height="270">
+                <!-- Controller Silhouette -->
+                <Path Fill="#151820" Stroke="#2A2F3A" StrokeThickness="2"
+                      Data="M 110,55 C 145,42 200,45 235,50 L 405,50 C 440,45 495,42 530,55 C 570,70 598,132 590,210 C 585,244 552,256 525,242 C 492,225 468,186 432,182 L 208,182 C 172,186 148,225 115,242 C 88,256 55,244 50,210 C 42,132 70,70 110,55 Z" />
+
+                <!-- L2 / L1 Triggers -->
+                <Border Canvas.Left="104" Canvas.Top="14" Width="64" Height="16" CornerRadius="4"
+                        Background="#1A1E27" BorderBrush="#2B303C" BorderThickness="1">
+                    <Grid>
+                        <Rectangle x:Name="L2Fill" HorizontalAlignment="Left" Width="0" Fill="#C81E32" RadiusX="3" RadiusY="3" />
+                        <TextBlock Text="L2" Foreground="#9AA1AE" FontSize="10" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Grid>
+                </Border>
+                <Border x:Name="L1Badge" Canvas.Left="104" Canvas.Top="34" Width="64" Height="16" CornerRadius="4"
+                        Background="#1A1E27" BorderBrush="#2B303C" BorderThickness="1">
+                    <TextBlock Text="L1" Foreground="#D0D5DF" FontSize="10" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                </Border>
+
+                <!-- R2 / R1 Triggers -->
+                <Border Canvas.Left="472" Canvas.Top="14" Width="64" Height="16" CornerRadius="4"
+                        Background="#1A1E27" BorderBrush="#2B303C" BorderThickness="1">
+                    <Grid>
+                        <Rectangle x:Name="R2Fill" HorizontalAlignment="Left" Width="0" Fill="#C81E32" RadiusX="3" RadiusY="3" />
+                        <TextBlock Text="R2" Foreground="#9AA1AE" FontSize="10" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Grid>
+                </Border>
+                <Border x:Name="R1Badge" Canvas.Left="472" Canvas.Top="34" Width="64" Height="16" CornerRadius="4"
+                        Background="#1A1E27" BorderBrush="#2B303C" BorderThickness="1">
+                    <TextBlock Text="R1" Foreground="#D0D5DF" FontSize="10" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                </Border>
+
+                <!-- Touchpad -->
+                <Border x:Name="TouchpadPlate" Canvas.Left="240" Canvas.Top="56" Width="160" Height="64" CornerRadius="6"
+                        Background="#101218" BorderBrush="#353B48" BorderThickness="1.2">
+                    <Canvas ClipToBounds="True">
+                        <Ellipse x:Name="TouchDot" Width="8" Height="8" Fill="#D4A853" Opacity="0.4" Canvas.Left="76" Canvas.Top="28" />
+                        <TextBlock Text="TOUCHPAD" Canvas.Left="48" Canvas.Top="24" Foreground="#4E5565" FontSize="10" FontWeight="SemiBold" />
+                    </Canvas>
+                </Border>
+
+                <!-- D-Pad -->
+                <Canvas Canvas.Left="110" Canvas.Top="92" Width="84" Height="84">
+                    <Border x:Name="DpadUp" Canvas.Left="29" Canvas.Top="2" Width="26" Height="26" CornerRadius="3" Background="#1D212B" BorderBrush="#2E3340" BorderThickness="1">
+                        <TextBlock Text="▲" FontSize="9" Foreground="#7A8291" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                    <Border x:Name="DpadDown" Canvas.Left="29" Canvas.Top="54" Width="26" Height="26" CornerRadius="3" Background="#1D212B" BorderBrush="#2E3340" BorderThickness="1">
+                        <TextBlock Text="▼" FontSize="9" Foreground="#7A8291" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                    <Border x:Name="DpadLeft" Canvas.Left="2" Canvas.Top="28" Width="26" Height="26" CornerRadius="3" Background="#1D212B" BorderBrush="#2E3340" BorderThickness="1">
+                        <TextBlock Text="◀" FontSize="9" Foreground="#7A8291" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                    <Border x:Name="DpadRight" Canvas.Left="56" Canvas.Top="28" Width="26" Height="26" CornerRadius="3" Background="#1D212B" BorderBrush="#2E3340" BorderThickness="1">
+                        <TextBlock Text="▶" FontSize="9" Foreground="#7A8291" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                </Canvas>
+
+                <!-- Face Buttons -->
+                <Canvas Canvas.Left="446" Canvas.Top="92" Width="84" Height="84">
+                    <Border x:Name="BtnTriangle" Canvas.Left="29" Canvas.Top="2" Width="26" Height="26" CornerRadius="13" Background="#1D212B" BorderBrush="#2E3340" BorderThickness="1">
+                        <TextBlock Text="△" FontSize="11" Foreground="#A2AAB8" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                    <Border x:Name="BtnCross" Canvas.Left="29" Canvas.Top="54" Width="26" Height="26" CornerRadius="13" Background="#1D212B" BorderBrush="#2E3340" BorderThickness="1">
+                        <TextBlock Text="✕" FontSize="11" Foreground="#A2AAB8" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                    <Border x:Name="BtnSquare" Canvas.Left="2" Canvas.Top="28" Width="26" Height="26" CornerRadius="13" Background="#1D212B" BorderBrush="#2E3340" BorderThickness="1">
+                        <TextBlock Text="□" FontSize="11" Foreground="#A2AAB8" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                    <Border x:Name="BtnCircle" Canvas.Left="56" Canvas.Top="28" Width="26" Height="26" CornerRadius="13" Background="#1D212B" BorderBrush="#2E3340" BorderThickness="1">
+                        <TextBlock Text="○" FontSize="11" Foreground="#A2AAB8" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                </Canvas>
+
+                <!-- Left Analog Stick -->
+                <Canvas Canvas.Left="206" Canvas.Top="142" Width="76" Height="76">
+                    <Ellipse Width="76" Height="76" Fill="#0B0C10" Stroke="#2F3542" StrokeThickness="1.5" />
+                    <Line X1="38" Y1="6" X2="38" y2="70" Stroke="#1F242D" StrokeThickness="1" />
+                    <Line X1="6" Y1="38" X2="70" Y2="38" Stroke="#1F242D" StrokeThickness="1" />
+                    <Ellipse x:Name="LeftStickCap" Width="34" Height="34" Canvas.Left="21" Canvas.Top="21"
+                             Fill="#232834" Stroke="#D4A853" StrokeThickness="1.5" />
+                </Canvas>
+
+                <!-- Right Analog Stick -->
+                <Canvas Canvas.Left="358" Canvas.Top="142" Width="76" Height="76">
+                    <Ellipse Width="76" Height="76" Fill="#0B0C10" Stroke="#2F3542" StrokeThickness="1.5" />
+                    <Line X1="38" Y1="6" X2="38" Y2="70" Stroke="#1F242D" StrokeThickness="1" />
+                    <Line X1="6" Y1="38" X2="70" Y2="38" Stroke="#1F242D" StrokeThickness="1" />
+                    <Ellipse x:Name="RightStickCap" Width="34" Height="34" Canvas.Left="21" Canvas.Top="21"
+                             Fill="#232834" Stroke="#C81E32" StrokeThickness="1.5" />
+                </Canvas>
+            </Canvas>
+        </Viewbox>
+    </Border>
+</UserControl>

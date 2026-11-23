@@ -1,0 +1,334 @@
+<Window x:Class="PhantomCompanion.Desktop.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:views="clr-namespace:PhantomCompanion.Desktop.Views"
+        Title="PHANTOM COMPANION"
+        Width="1120" Height="740" MinWidth="960" MinHeight="640"
+        Background="{StaticResource BgNearBlackBrush}"
+        Foreground="{StaticResource TextPrimaryBrush}"
+        WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="188" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <!-- Minimal Left Rail -->
+        <Border Grid.Column="0" Background="#0D0E12" BorderBrush="{StaticResource SurfaceBorderBrush}" BorderThickness="0,0,1,0" Padding="14,18">
+            <DockPanel LastChildFill="True">
+                <StackPanel DockPanel.Dock="Top" Margin="4,0,4,24">
+                    <TextBlock Text="PHANTOM" FontSize="15" FontWeight="Bold" Foreground="{StaticResource TextPrimaryBrush}" />
+                    <TextBlock Text="COMPANION" FontSize="10" Foreground="{StaticResource AccentGoldBrush}" FontWeight="SemiBold" Margin="0,2,0,0" />
+                </StackPanel>
+
+                <StackPanel DockPanel.Dock="Bottom" Margin="4,16,4,0">
+                    <TextBlock Text="ACTIVE MODE" FontSize="10" Foreground="{StaticResource TextSecondaryBrush}" FontWeight="SemiBold" />
+                    <TextBlock Text="{Binding Verification.ActiveOutputMode}" FontSize="12" Foreground="{StaticResource AccentGoldBrush}" FontWeight="SemiBold" Margin="0,3,0,8" />
+                    <TextBlock Text="PROFILE" FontSize="10" Foreground="{StaticResource TextSecondaryBrush}" FontWeight="SemiBold" />
+                    <TextBlock Text="{Binding Verification.ActiveProfileName}" FontSize="12" Foreground="{StaticResource TextPrimaryBrush}" TextTrimming="CharacterEllipsis" Margin="0,3,0,0" />
+                </StackPanel>
+
+                <StackPanel>
+                    <Button Content="Controller" Command="{Binding SelectSectionCommand}" CommandParameter="0" Style="{StaticResource PhantomButton}" HorizontalContentAlignment="Left" Margin="0,0,0,6" />
+                    <Button Content="Connection" Command="{Binding SelectSectionCommand}" CommandParameter="1" Style="{StaticResource PhantomButton}" HorizontalContentAlignment="Left" Margin="0,0,0,6" />
+                    <Button Content="Profiles" Command="{Binding SelectSectionCommand}" CommandParameter="2" Style="{StaticResource PhantomButton}" HorizontalContentAlignment="Left" Margin="0,0,0,6" />
+                    <Button Content="Diagnostics" Command="{Binding SelectSectionCommand}" CommandParameter="3" Style="{StaticResource PhantomButton}" HorizontalContentAlignment="Left" Margin="0,0,0,6" />
+                    <Button Content="Settings" Command="{Binding SelectSectionCommand}" CommandParameter="4" Style="{StaticResource PhantomButton}" HorizontalContentAlignment="Left" />
+                </StackPanel>
+            </DockPanel>
+        </Border>
+
+        <!-- Section Workspace -->
+        <TabControl Grid.Column="1" SelectedIndex="{Binding SelectedTabIndex}" Background="Transparent" BorderThickness="0" Padding="24">
+            <TabControl.ItemContainerStyle>
+                <Style TargetType="TabItem">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                </Style>
+            </TabControl.ItemContainerStyle>
+
+            <!-- 0. CONTROLLER (Primary Screen) -->
+            <TabItem Header="Controller">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <!-- Top Bar: Profile + Mode Selector -->
+                    <DockPanel Grid.Row="0" Margin="0,0,0,16">
+                        <StackPanel DockPanel.Dock="Left">
+                            <TextBlock Text="LIVE CONTROLLER" FontSize="18" FontWeight="SemiBold" />
+                            <TextBlock Text="{Binding StickSummary}" FontSize="11" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,4,0,0" />
+                        </StackPanel>
+
+                        <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
+                            <ComboBox ItemsSource="{Binding ProfilesList}"
+                                      SelectedItem="{Binding SelectedProfile}"
+                                      DisplayMemberPath="Name"
+                                      Width="185" Style="{StaticResource PhantomComboBox}" Margin="0,0,12,0" />
+                            <RadioButton Content="Universal Gamepad" IsChecked="{Binding IsUniversalGamepadMode}" GroupName="ModeSwitch" Foreground="{StaticResource TextPrimaryBrush}" VerticalAlignment="Center" Margin="0,0,12,0" />
+                            <RadioButton Content="Keyboard &amp; Mouse" IsChecked="{Binding IsKeyboardMouseMode}" GroupName="ModeSwitch" Foreground="{StaticResource TextPrimaryBrush}" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </DockPanel>
+
+                    <!-- Visual Controller Hardware Surface -->
+                    <views:ControllerVisualizerControl x:Name="Visualizer" Grid.Row="1" />
+
+                    <!-- Honest 6-Step System Verification Strip -->
+                    <Border Grid.Row="2" Background="{StaticResource SurfaceGraphiteBrush}" BorderBrush="{StaticResource SurfaceBorderBrush}" BorderThickness="1" CornerRadius="6" Padding="14" Margin="0,16,0,10">
+                        <UniformGrid Columns="5">
+                            <StackPanel>
+                                <TextBlock Text="1. PHONE LINK" FontSize="10" Foreground="{StaticResource TextSecondaryBrush}" />
+                                <TextBlock Text="{Binding Verification.PhoneUsbConnected}" FontSize="12" FontWeight="SemiBold" Foreground="{StaticResource AccentGoldBrush}" Margin="0,3,0,0" />
+                            </StackPanel>
+                            <StackPanel>
+                                <TextBlock Text="2. INPUT STREAM" FontSize="10" Foreground="{StaticResource TextSecondaryBrush}" />
+                                <TextBlock Text="{Binding Verification.CompanionReceivingInput}" FontSize="12" FontWeight="SemiBold" Foreground="{StaticResource TextPrimaryBrush}" Margin="0,3,0,0" />
+                            </StackPanel>
+                            <StackPanel>
+                                <TextBlock Text="3. VHF DRIVER" FontSize="10" Foreground="{StaticResource TextSecondaryBrush}" />
+                                <TextBlock Text="{Binding Verification.VirtualDriverInstalled}" FontSize="12" FontWeight="SemiBold" Foreground="{StaticResource TextPrimaryBrush}" Margin="0,3,0,0" />
+                            </StackPanel>
+                            <StackPanel>
+                                <TextBlock Text="4. VIRTUAL PAD" FontSize="10" Foreground="{StaticResource TextSecondaryBrush}" />
+                                <TextBlock Text="{Binding Verification.VirtualGamepadCreated}" FontSize="12" FontWeight="SemiBold" Foreground="{StaticResource TextPrimaryBrush}" Margin="0,3,0,0" />
+                            </StackPanel>
+                            <StackPanel>
+                                <TextBlock Text="5. WINDOWS HID" FontSize="10" Foreground="{StaticResource TextSecondaryBrush}" />
+                                <TextBlock Text="{Binding Verification.WindowsDetectingGamepad}" FontSize="12" FontWeight="SemiBold" Foreground="{StaticResource TextPrimaryBrush}" Margin="0,3,0,0" />
+                            </StackPanel>
+                        </UniformGrid>
+                    </Border>
+
+                    <!-- Honest Compatibility Guidance Line -->
+                    <Border Grid.Row="3" Background="#101218" BorderBrush="{StaticResource SurfaceBorderBrush}" BorderThickness="1" CornerRadius="4" Padding="12,8">
+                        <TextBlock Text="{Binding Verification.DetailMessage}" FontSize="11.5" Foreground="{StaticResource TextSecondaryBrush}" TextWrapping="Wrap" />
+                    </Border>
+                </Grid>
+            </TabItem>
+
+            <!-- 1. CONNECTION -->
+            <TabItem Header="Connection">
+                <StackPanel>
+                    <TextBlock Text="USB &amp; TRANSPORT CONNECTION" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,16" />
+
+                    <Border Background="{StaticResource SurfaceGraphiteBrush}" BorderBrush="{StaticResource SurfaceBorderBrush}" BorderThickness="1" CornerRadius="6" Padding="16" Margin="0,0,0,14">
+                        <DockPanel>
+                            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
+                                <Button Content="Start Server" Command="{Binding StartServerCommand}" Style="{StaticResource PhantomButton}" Margin="0,0,8,0" />
+                                <Button Content="Stop Server" Command="{Binding StopServerCommand}" Style="{StaticResource PhantomCrimsonButton}" />
+                            </StackPanel>
+                            <StackPanel>
+                                <TextBlock Text="LOCAL WEBSOCKET SERVER (LOOPBACK ONLY)" FontSize="10" Foreground="{StaticResource TextSecondaryBrush}" />
+                                <TextBlock Text="{Binding WebSocketEndpoint}" FontSize="15" FontWeight="SemiBold" Foreground="{StaticResource AccentGoldBrush}" Margin="0,4,0,2" />
+                                <TextBlock Text="{Binding WebSocketStateLabel, StringFormat=Status: {0}}" FontSize="12" Foreground="{StaticResource TextPrimaryBrush}" />
+                            </StackPanel>
+                        </DockPanel>
+                    </Border>
+
+                    <Border Background="{StaticResource SurfaceGraphiteBrush}" BorderBrush="{StaticResource SurfaceBorderBrush}" BorderThickness="1" CornerRadius="6" Padding="16" Margin="0,0,0,14">
+                        <StackPanel>
+                            <DockPanel Margin="0,0,0,10">
+                                <Button DockPanel.Dock="Right" Content="Scan USB &amp; Forward ADB" Command="{Binding RefreshAdbCommand}" Style="{StaticResource PhantomButton}" />
+                                <StackPanel>
+                                    <TextBlock Text="ANDROID DEBUG BRIDGE (ADB REVERSE)" FontSize="10" Foreground="{StaticResource TextSecondaryBrush}" />
+                                    <TextBlock Text="{Binding AdbStatus.StatusMessage}" FontSize="12.5" Foreground="{StaticResource TextPrimaryBrush}" Margin="0,4,0,0" TextWrapping="Wrap" />
+                                </StackPanel>
+                            </DockPanel>
+
+                            <TextBlock Text="{Binding AdbStatus.AdbExecutablePath, StringFormat=adb.exe: {0}}" FontSize="11" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,8" />
+
+                            <ListView ItemsSource="{Binding AdbDevices}" Background="#0D0F14" BorderBrush="{StaticResource SurfaceBorderBrush}" Foreground="{StaticResource TextPrimaryBrush}" Height="140">
+                                <ListView.View>
+                                    <GridView>
+                                        <GridViewColumn Header="Serial" Width="180" DisplayMemberBinding="{Binding Serial}" />
+                                        <GridViewColumn Header="Model" Width="180" DisplayMemberBinding="{Binding Model}" />
+                                        <GridViewColumn Header="ADB State" Width="120" DisplayMemberBinding="{Binding StateRaw}" />
+                                        <GridViewColumn Header="Authorization" Width="140" DisplayMemberBinding="{Binding AuthState}" />
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Background="#101218" BorderBrush="{StaticResource SurfaceBorderBrush}" BorderThickness="1" CornerRadius="6" Padding="14">
+                        <TextBlock Text="Setup: Enable USB Debugging on Realme C51 -> plug USB cable -> tap Allow USB Debugging on phone -> open Phantom Controller and connect to ws://127.0.0.1:8765. Future transport adapters (USB AOA / Local Wi-Fi) plug into ICommunicationTransport cleanly." FontSize="11.5" Foreground="{StaticResource TextSecondaryBrush}" TextWrapping="Wrap" />
+                    </Border>
+                </StackPanel>
+            </TabItem>
+
+            <!-- 2. PROFILES -->
+            <TabItem Header="Profiles">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <DockPanel Grid.Row="0" Margin="0,0,0,12">
+                        <TextBlock Text="CONTROLLER &amp; KEYBOARD/MOUSE PROFILES" FontSize="18" FontWeight="SemiBold" DockPanel.Dock="Left" VerticalAlignment="Center" />
+                        <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                            <Button Content="Duplicate" Command="{Binding DuplicateProfileCommand}" Style="{StaticResource PhantomButton}" Margin="0,0,6,0" />
+                            <Button Content="Reset Built-In" Command="{Binding ResetBuiltInProfileCommand}" Style="{StaticResource PhantomButton}" Margin="0,0,6,0" />
+                            <Button Content="Delete Custom" Command="{Binding DeleteProfileCommand}" IsEnabled="{Binding CanDeleteSelectedProfile}" Style="{StaticResource PhantomCrimsonButton}" Margin="0,0,6,0" />
+                            <Button Content="Import JSON" Command="{Binding ImportProfileCommand}" Style="{StaticResource PhantomButton}" Margin="0,0,6,0" />
+                            <Button Content="Export JSON" Command="{Binding ExportProfileCommand}" Style="{StaticResource PhantomButton}" />
+                        </StackPanel>
+                    </DockPanel>
+
+                    <Border Grid.Row="1" Background="{StaticResource SurfaceGraphiteBrush}" BorderBrush="{StaticResource SurfaceBorderBrush}" BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,0,0,12">
+                        <WrapPanel VerticalAlignment="Center">
+                            <ComboBox ItemsSource="{Binding ProfilesList}" SelectedItem="{Binding SelectedProfile}" DisplayMemberPath="Name" Width="200" Style="{StaticResource PhantomComboBox}" Margin="0,0,12,0" />
+                            <TextBox Text="{Binding SelectedProfile.Name, UpdateSourceTrigger=PropertyChanged}" Width="160" Style="{StaticResource PhantomTextBox}" Margin="0,0,12,0" />
+                            <RadioButton Content="Universal Gamepad" IsChecked="{Binding IsUniversalGamepadMode}" GroupName="ProfileMode" Foreground="{StaticResource TextPrimaryBrush}" VerticalAlignment="Center" Margin="0,0,12,0" />
+                            <RadioButton Content="Keyboard &amp; Mouse" IsChecked="{Binding IsKeyboardMouseMode}" GroupName="ProfileMode" Foreground="{StaticResource TextPrimaryBrush}" VerticalAlignment="Center" Margin="0,0,18,0" />
+                            <TextBox Text="{Binding NewProfileName, UpdateSourceTrigger=PropertyChanged}" Width="120" Style="{StaticResource PhantomTextBox}" Margin="0,0,6,0" ToolTip="New custom profile name" />
+                            <Button Content="+ Create" Command="{Binding CreateProfileCommand}" Style="{StaticResource PhantomButton}" />
+                        </WrapPanel>
+                    </Border>
+
+                    <!-- Mappings & Stick Tuning -->
+                    <Grid Grid.Row="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1.5*" />
+                            <ColumnDefinition Width="16" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+
+                        <DataGrid Grid.Column="0" ItemsSource="{Binding MappingRows}" AutoGenerateColumns="False" CanUserAddRows="False"
+                                  Background="#0D0F14" Foreground="{StaticResource TextPrimaryBrush}" RowBackground="#12141A" AlternatingRowBackground="#151820"
+                                  GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="#232730" BorderBrush="{StaticResource SurfaceBorderBrush}" BorderThickness="1">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Input" Binding="{Binding DisplayLabel}" IsReadOnly="True" Width="170" />
+                                <DataGridComboBoxColumn Header="Gamepad Output" SelectedItemBinding="{Binding GamepadTarget}" ItemsSource="{Binding DataContext.XboxTargets, RelativeSource={RelativeSource AncestorType=Window}}" Width="140" />
+                                <DataGridComboBoxColumn Header="KB/Mouse Type" SelectedItemBinding="{Binding KbActionType}" ItemsSource="{Binding DataContext.KbMouseActions, RelativeSource={RelativeSource AncestorType=Window}}" Width="115" />
+                                <DataGridTextColumn Header="Key (e.g. Q, D1)" Binding="{Binding KbKeyName}" Width="105" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+                        <Border Grid.Column="2" Background="{StaticResource SurfaceGraphiteBrush}" BorderBrush="{StaticResource SurfaceBorderBrush}" BorderThickness="1" CornerRadius="6" Padding="14">
+                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                <StackPanel>
+                                    <TextBlock Text="STICK &amp; TOUCHPAD TUNING" FontSize="11" FontWeight="SemiBold" Foreground="{StaticResource AccentGoldBrush}" Margin="0,0,0,10" />
+
+                                    <TextBlock Text="Left Deadzone" FontSize="11" Foreground="{StaticResource TextSecondaryBrush}" />
+                                    <Slider Minimum="0" Maximum="0.4" Value="{Binding SelectedProfile.Sticks.LeftDeadzone}" TickFrequency="0.01" Margin="0,2,0,8" />
+
+                                    <TextBlock Text="Right Deadzone" FontSize="11" Foreground="{StaticResource TextSecondaryBrush}" />
+                                    <Slider Minimum="0" Maximum="0.4" Value="{Binding SelectedProfile.Sticks.RightDeadzone}" TickFrequency="0.01" Margin="0,2,0,8" />
+
+                                    <TextBlock Text="Right Aim Mouse Sensitivity" FontSize="11" Foreground="{StaticResource TextSecondaryBrush}" />
+                                    <Slider Minimum="2" Maximum="40" Value="{Binding SelectedProfile.Sticks.MouseSensitivity}" TickFrequency="1" Margin="0,2,0,8" />
+
+                                    <TextBlock Text="WASD Stick Threshold" FontSize="11" Foreground="{StaticResource TextSecondaryBrush}" />
+                                    <Slider Minimum="0.12" Maximum="0.65" Value="{Binding SelectedProfile.Sticks.WasdThreshold}" TickFrequency="0.02" Margin="0,2,0,8" />
+
+                                    <TextBlock Text="Smoothing" FontSize="11" Foreground="{StaticResource TextSecondaryBrush}" />
+                                    <Slider Minimum="0" Maximum="0.8" Value="{Binding SelectedProfile.Sticks.InputSmoothing}" TickFrequency="0.05" Margin="0,2,0,8" />
+
+                                    <CheckBox Content="Left Stick -> WASD (KB/M Mode)" IsChecked="{Binding SelectedProfile.Sticks.LeftStickAsWasd}" Style="{StaticResource PhantomCheckBox}" Margin="0,4,0,6" />
+                                    <CheckBox Content="Invert Right Stick Y" IsChecked="{Binding SelectedProfile.Sticks.InvertRightY}" Style="{StaticResource PhantomCheckBox}" Margin="0,0,0,10" />
+
+                                    <TextBlock Text="Touchpad Mode" FontSize="11" Foreground="{StaticResource TextSecondaryBrush}" />
+                                    <ComboBox ItemsSource="{Binding TouchpadModes}" SelectedItem="{Binding SelectedProfile.Touchpad.Mode}" Style="{StaticResource PhantomComboBox}" Margin="0,4,0,0" />
+                                </StackPanel>
+                            </ScrollViewer>
+                        </Border>
+                    </Grid>
+
+                    <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,12,0,0">
+                        <Button Content="Save &amp; Apply Profile" Command="{Binding SaveProfileCommand}" Style="{StaticResource PhantomCrimsonButton}" />
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+
+            <!-- 3. DIAGNOSTICS -->
+            <TabItem Header="Diagnostics">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <DockPanel Grid.Row="0" Margin="0,0,0,12">
+                        <TextBlock Text="TELEMETRY &amp; DRIVER DIAGNOSTICS" FontSize="18" FontWeight="SemiBold" />
+                        <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                            <Button Content="Probe Windows HID &amp; Driver" Command="{Binding ProbeWindowsGamepadCommand}" Style="{StaticResource PhantomButton}" Margin="0,0,8,0" />
+                            <Button Content="Test Neutral VHF Report" Command="{Binding SendTestGamepadReportCommand}" Style="{StaticResource PhantomButton}" />
+                        </StackPanel>
+                    </DockPanel>
+
+                    <Border Grid.Row="1" Background="{StaticResource SurfaceGraphiteBrush}" BorderBrush="{StaticResource SurfaceBorderBrush}" BorderThickness="1" CornerRadius="6" Padding="14" Margin="0,0,0,12">
+                        <UniformGrid Columns="4">
+                            <StackPanel>
+                                <TextBlock Text="PROCESSING TIME" FontSize="10" Foreground="{StaticResource TextSecondaryBrush}" />
+                                <TextBlock Text="{Binding Telemetry.LastProcessingMicroseconds, StringFormat={}{0:F1} µs}" FontSize="16" FontWeight="SemiBold" Foreground="{StaticResource AccentGoldBrush}" />
+                            </StackPanel>
+                            <StackPanel>
+                                <TextBlock Text="UPDATE RATE" FontSize="10" Foreground="{StaticResource TextSecondaryBrush}" />
+                                <TextBlock Text="{Binding Telemetry.MessagesPerSecond, StringFormat={}{0:F1} msg/s}" FontSize="16" FontWeight="SemiBold" />
+                            </StackPanel>
+                            <StackPanel>
+                                <TextBlock Text="EVENTS PROCESSED" FontSize="10" Foreground="{StaticResource TextSecondaryBrush}" />
+                                <TextBlock Text="{Binding Telemetry.TotalEventsProcessed}" FontSize="16" FontWeight="SemiBold" />
+                            </StackPanel>
+                            <StackPanel>
+                                <TextBlock Text="DROPPED FRAMES" FontSize="10" Foreground="{StaticResource TextSecondaryBrush}" />
+                                <TextBlock Text="{Binding Telemetry.DroppedOrInvalidEvents}" FontSize="16" FontWeight="SemiBold" Foreground="{StaticResource AccentCrimsonBrush}" />
+                            </StackPanel>
+                        </UniformGrid>
+                    </Border>
+
+                    <Border Grid.Row="2" Background="#101218" BorderBrush="{StaticResource SurfaceBorderBrush}" BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,0,0,12">
+                        <TextBlock Text="{Binding WindowsProbeSummary}" FontFamily="Consolas" FontSize="11.5" Foreground="{StaticResource TextPrimaryBrush}" TextWrapping="Wrap" />
+                    </Border>
+
+                    <ListView Grid.Row="3" ItemsSource="{Binding DiagnosticLogs}" Background="#0D0F14" BorderBrush="{StaticResource SurfaceBorderBrush}" Foreground="{StaticResource TextPrimaryBrush}" FontFamily="Consolas" FontSize="11">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="UTC Time" Width="110" DisplayMemberBinding="{Binding Timestamp, StringFormat={}{0:HH:mm:ss}}" />
+                                <GridViewColumn Header="Severity" Width="80" DisplayMemberBinding="{Binding Severity}" />
+                                <GridViewColumn Header="Source" Width="105" DisplayMemberBinding="{Binding Source}" />
+                                <GridViewColumn Header="Message" Width="530" DisplayMemberBinding="{Binding Message}" />
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </Grid>
+            </TabItem>
+
+            <!-- 4. SETTINGS -->
+            <TabItem Header="Settings">
+                <StackPanel MaxWidth="680" HorizontalAlignment="Left">
+                    <TextBlock Text="APPLICATION SETTINGS" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,16" />
+
+                    <Border Background="{StaticResource SurfaceGraphiteBrush}" BorderBrush="{StaticResource SurfaceBorderBrush}" BorderThickness="1" CornerRadius="6" Padding="16" Margin="0,0,0,14">
+                        <StackPanel>
+                            <TextBlock Text="ADB EXECUTABLE PATH (adb.exe)" FontSize="11" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,6" />
+                            <DockPanel Margin="0,0,0,14">
+                                <Button DockPanel.Dock="Right" Content="Browse..." Command="{Binding BrowseAdbCommand}" Style="{StaticResource PhantomButton}" Margin="8,0,0,0" />
+                                <TextBox Text="{Binding CustomAdbPath, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource PhantomTextBox}" />
+                            </DockPanel>
+
+                            <TextBlock Text="LOCALHOST WEBSOCKET PORT (Default 8765)" FontSize="11" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,6" />
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,14">
+                                <TextBox Text="{Binding WebSocketPort}" Width="110" Style="{StaticResource PhantomTextBox}" Margin="0,0,8,0" />
+                                <Button Content="Apply &amp; Restart Listener" Command="{Binding ApplyPortCommand}" Style="{StaticResource PhantomButton}" />
+                            </StackPanel>
+
+                            <CheckBox Content="Automatically start WebSocket server on launch" IsChecked="{Binding AutoStartServer}" Style="{StaticResource PhantomCheckBox}" Margin="0,0,0,8" />
+                            <CheckBox Content="Automatically run adb reverse forwarding when Android device attaches" IsChecked="{Binding AutoForwardAdb}" Style="{StaticResource PhantomCheckBox}" />
+                        </StackPanel>
+                    </Border>
+
+                    <Button Content="Clear Diagnostic Logs" Command="{Binding ClearLogsCommand}" Style="{StaticResource PhantomButton}" HorizontalAlignment="Left" />
+                </StackPanel>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>

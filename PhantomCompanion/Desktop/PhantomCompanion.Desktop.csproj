@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyName>PhantomCompanion</AssemblyName>
+    <RootNamespace>PhantomCompanion.Desktop</RootNamespace>
+    <ApplicationTitle>PHANTOM COMPANION</ApplicationTitle>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\InputCore\PhantomCompanion.InputCore.csproj" />
+    <ProjectReference Include="..\Communication\PhantomCompanion.Communication.csproj" />
+    <ProjectReference Include="..\ADB\PhantomCompanion.ADB.csproj" />
+    <ProjectReference Include="..\VirtualGamepad\PhantomCompanion.VirtualGamepad.csproj" />
+    <ProjectReference Include="..\KeyboardMouse\PhantomCompanion.KeyboardMouse.csproj" />
+    <ProjectReference Include="..\Diagnostics\PhantomCompanion.Diagnostics.csproj" />
+  </ItemGroup>
+</Project>

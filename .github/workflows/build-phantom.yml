@@ -1,0 +1,103 @@
+name: Build Phantom Companion & Controller APK
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build-windows-companion:
+    name: Build & Test Windows Companion (.NET 8 x64)
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 8 SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore PhantomCompanion/PhantomCompanion.sln
+
+      - name: Build solution
+        run: dotnet build PhantomCompanion/PhantomCompanion.sln --configuration Release --no-restore
+
+      - name: Run xUnit tests
+        run: dotnet test PhantomCompanion/PhantomCompanion.sln --configuration Release --no-build --verbosity normal
+
+      - name: Publish self-contained PhantomCompanion win-x64
+        run: >
+          dotnet publish PhantomCompanion/Desktop/PhantomCompanion.Desktop.csproj
+          --configuration Release
+          --runtime win-x64
+          --self-contained true
+          -p:PublishSingleFile=true
+          -p:IncludeNativeLibrariesForSelfExtract=true
+          --output artifacts/win-x64
+
+      - name: Copy docs and installer scripts
+        shell: pwsh
+        run: |
+          Copy-Item -Path PhantomCompanion/Documentation -Destination artifacts/win-x64/Documentation -Recurse
+          Copy-Item -Path PhantomCompanion/Installer/*.ps1 -Destination artifacts/win-x64/
+
+      - name: Upload Windows Companion artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: PhantomCompanion-win-x64
+          path: artifacts/win-x64/
+
+  build-android-controller-apk:
+    name: Build Phantom Controller Android APK
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install web dependencies & run Vite unit tests
+        run: |
+          npm ci
+          npx --yes tsx --test src/utils/controllerMath.test.ts
+          npx --yes tsx --test src/utils/companionBridge.test.ts
+          npm run lint
+          npm run build
+
+      - name: Bundle built controller web app into Android assets
+        run: |
+          rm -rf android-controller/app/src/main/assets
+          mkdir -p android-controller/app/src/main/assets
+          cp -r dist/* android-controller/app/src/main/assets/
+
+      - name: Setup Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Setup Gradle 8.7 & Build Debug APK
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+
+      - name: Assemble Android APK
+        working-directory: android-controller
+        run: gradle assembleDebug --no-daemon
+
+      - name: Upload Android APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: PhantomController-android-debug-apk
+          path: android-controller/app/build/outputs/apk/debug/app-debug.apk

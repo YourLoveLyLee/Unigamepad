@@ -1,0 +1,56 @@
+[Version]
+Signature="$WINDOWS NT$"
+Class=HIDClass
+ClassGuid={745a17a0-74d3-11d0-b6fe-00a0c90f57da}
+Provider=%ManufacturerName%
+CatalogFile=PhantomVhfDriver.cat
+DriverVer=01/01/2026,1.0.0.0
+PnpLockdown=1
+
+[DestinationDirs]
+DefaultDestDir = 13
+
+[SourceDisksNames]
+1 = %DiskName%,,,""
+
+[SourceDisksFiles]
+PhantomVhfDriver.sys = 1,,
+
+[Manufacturer]
+%ManufacturerName%=Standard,NTamd64
+
+[Standard.NTamd64]
+%PhantomVhf.DeviceDesc%=PhantomVhf_Device, Root\PhantomVhfGamepad
+
+[PhantomVhf_Device.NT]
+CopyFiles=Drivers_Dir
+Include=vhf.inf
+Needs=VHF.NT
+
+[Drivers_Dir]
+PhantomVhfDriver.sys
+
+[PhantomVhf_Device.NT.Services]
+AddService = PhantomVhfDriver,%SPSVCINST_ASSOCSERVICE%, PhantomVhf_Service_Inst
+Include=vhf.inf
+Needs=VHF.NT.Services
+
+[PhantomVhf_Service_Inst]
+DisplayName    = %PhantomVhf.SVCDESC%
+ServiceType    = 1               ; SERVICE_KERNEL_DRIVER
+StartType      = 3               ; SERVICE_DEMAND_START
+ErrorControl   = 1               ; SERVICE_ERROR_NORMAL
+ServiceBinary  = %13%\PhantomVhfDriver.sys
+
+[PhantomVhf_Device.NT.Wdf]
+KmdfService = PhantomVhfDriver, PhantomVhf_wdfsect
+
+[PhantomVhf_wdfsect]
+KmdfLibraryVersion = 1.33
+
+[Strings]
+SPSVCINST_ASSOCSERVICE = 0x00000002
+ManufacturerName = "Phantom Peripheral Architecture"
+DiskName = "Phantom Virtual HID Driver Disk"
+PhantomVhf.DeviceDesc = "Phantom Virtual HID Gamepad (VHF)"
+PhantomVhf.SVCDESC = "Phantom VHF Virtual Gamepad Service"

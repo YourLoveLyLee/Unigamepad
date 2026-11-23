@@ -1,0 +1,6 @@
+{
+  "name": "Phantom Controller",
+  "description": "DualSense-inspired tactile mobile gamepad prototype with 3D WebGL analog sticks, multi-touch edge triggers, touchpad gestures, and gyroscope aiming.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

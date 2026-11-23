@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AssemblyName>PhantomCompanion.KeyboardMouse</AssemblyName>
+    <RootNamespace>PhantomCompanion.KeyboardMouse</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\InputCore\PhantomCompanion.InputCore.csproj" />
+    <ProjectReference Include="..\Diagnostics\PhantomCompanion.Diagnostics.csproj" />
+  </ItemGroup>
+</Project>
