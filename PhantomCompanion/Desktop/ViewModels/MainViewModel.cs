@@ -448,8 +448,8 @@ public sealed class MainViewModel : ObservableObject, IDisposable
             SelectedProfile.KbMouseMappings[row.InputKey] = new KbMouseBinding
             {
                 ActionType = row.KbActionType,
-                KeyName = row.KbKeyName?.Trim() ?? string.Empty,
-                Description = row.KbActionType == KbMouseActionType.None ? "Unassigned" : row.KbKeyName
+                KeyName = (row.KbKeyName ?? string.Empty).Trim(),
+                Description = row.KbActionType == KbMouseActionType.None ? "Unassigned" : (row.KbKeyName ?? string.Empty)
             };
         }
         _orchestrator.Profiles.Save();
