@@ -62,11 +62,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-          cache: 'npm'
 
       - name: Install web dependencies & run Vite unit tests
         run: |
-          npm ci
+          if [ -f package-lock.json ]; then npm ci; else npm install; fi
           npx --yes tsx --test src/utils/controllerMath.test.ts
           npx --yes tsx --test src/utils/companionBridge.test.ts
           npm run lint

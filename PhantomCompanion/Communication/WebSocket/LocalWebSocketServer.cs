@@ -206,8 +206,7 @@ public sealed class LocalWebSocketServer : ICommunicationTransport
                 if (result.MessageType != WebSocketMessageType.Text || ms.Length == 0)
                     continue;
 
-                var span = ms.GetBuffer().AsSpan(0, (int)ms.Length);
-                if (!ProtocolParser.TryParse(span, out var parsed, out var err))
+                if (!TryParseFrame(ms, out var parsed, out var err))
                 {
                     Interlocked.Increment(ref _droppedEvents);
                     _logger.Warning("Protocol", $"Rejected invalid message: {err}");
@@ -248,6 +247,12 @@ public sealed class LocalWebSocketServer : ICommunicationTransport
             _logger.Info("WebSocket", "Phone disconnected; all held virtual inputs released.");
             ClientDisconnected?.Invoke();
         }
+    }
+
+    private static bool TryParseFrame(MemoryStream ms, out ParsedControllerEvent parsed, out string error)
+    {
+        ReadOnlySpan<byte> span = ms.GetBuffer().AsSpan(0, (int)ms.Length);
+        return ProtocolParser.TryParse(span, out parsed, out error);
     }
 
     private async Task SendPongAsync(System.Net.WebSockets.WebSocket socket, long clientTimestamp, CancellationToken ct)

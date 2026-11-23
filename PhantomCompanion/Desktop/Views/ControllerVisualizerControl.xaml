@@ -79,7 +79,7 @@
                 <!-- Left Analog Stick -->
                 <Canvas Canvas.Left="206" Canvas.Top="142" Width="76" Height="76">
                     <Ellipse Width="76" Height="76" Fill="#0B0C10" Stroke="#2F3542" StrokeThickness="1.5" />
-                    <Line X1="38" Y1="6" X2="38" y2="70" Stroke="#1F242D" StrokeThickness="1" />
+                    <Line X1="38" Y1="6" X2="38" Y2="70" Stroke="#1F242D" StrokeThickness="1" />
                     <Line X1="6" Y1="38" X2="70" Y2="38" Stroke="#1F242D" StrokeThickness="1" />
                     <Ellipse x:Name="LeftStickCap" Width="34" Height="34" Canvas.Left="21" Canvas.Top="21"
                              Fill="#232834" Stroke="#D4A853" StrokeThickness="1.5" />

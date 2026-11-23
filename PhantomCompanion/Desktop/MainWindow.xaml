@@ -1,12 +1,26 @@
 <Window x:Class="PhantomCompanion.Desktop.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:sys="clr-namespace:System;assembly=System.Runtime"
+        xmlns:profiles="clr-namespace:PhantomCompanion.InputCore.Profiles;assembly=PhantomCompanion.InputCore"
         xmlns:views="clr-namespace:PhantomCompanion.Desktop.Views"
         Title="PHANTOM COMPANION"
         Width="1120" Height="740" MinWidth="960" MinHeight="640"
         Background="{StaticResource BgNearBlackBrush}"
         Foreground="{StaticResource TextPrimaryBrush}"
         WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <ObjectDataProvider x:Key="XboxTargetsProvider" MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="profiles:XboxButtonTarget" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider x:Key="KbMouseActionsProvider" MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="profiles:KbMouseActionType" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="188" />
@@ -204,8 +218,8 @@
                                   GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="#232730" BorderBrush="{StaticResource SurfaceBorderBrush}" BorderThickness="1">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Input" Binding="{Binding DisplayLabel}" IsReadOnly="True" Width="170" />
-                                <DataGridComboBoxColumn Header="Gamepad Output" SelectedItemBinding="{Binding GamepadTarget}" ItemsSource="{Binding DataContext.XboxTargets, RelativeSource={RelativeSource AncestorType=Window}}" Width="140" />
-                                <DataGridComboBoxColumn Header="KB/Mouse Type" SelectedItemBinding="{Binding KbActionType}" ItemsSource="{Binding DataContext.KbMouseActions, RelativeSource={RelativeSource AncestorType=Window}}" Width="115" />
+                                <DataGridComboBoxColumn Header="Gamepad Output" SelectedItemBinding="{Binding GamepadTarget}" ItemsSource="{Binding Source={StaticResource XboxTargetsProvider}}" Width="140" />
+                                <DataGridComboBoxColumn Header="KB/Mouse Type" SelectedItemBinding="{Binding KbActionType}" ItemsSource="{Binding Source={StaticResource KbMouseActionsProvider}}" Width="115" />
                                 <DataGridTextColumn Header="Key (e.g. Q, D1)" Binding="{Binding KbKeyName}" Width="105" />
                             </DataGrid.Columns>
                         </DataGrid>
