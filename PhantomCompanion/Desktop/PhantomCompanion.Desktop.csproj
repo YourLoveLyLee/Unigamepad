@@ -5,6 +5,7 @@
     <UseWPF>true</UseWPF>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
     <AssemblyName>PhantomCompanion</AssemblyName>
     <RootNamespace>PhantomCompanion.Desktop</RootNamespace>
     <ApplicationTitle>PHANTOM COMPANION</ApplicationTitle>
