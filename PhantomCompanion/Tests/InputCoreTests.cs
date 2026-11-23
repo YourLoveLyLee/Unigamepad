@@ -53,7 +53,7 @@ public sealed class InputCoreTests
         Assert.Equal("L1", btnEv.Target);
         Assert.True(btnEv.Pressed);
 
-        var joyJson = Encoding.UTF8.GetBytes("{\"type\":\"joystick\",\"target\":\"right\",\"x\":0.75,\"y\":-0.5,\"timestamp\":123457}");
+        var joyJson = Encoding.UTF8.GetBytes("{\"type\":\"joystick\",\"stick\":\"right\",\"x\":0.75,\"y\":-0.5,\"timestamp\":123457}");
         Assert.True(ProtocolParser.TryParse(joyJson, out var joyEv, out var joyErr), joyErr);
         Assert.Equal(ControllerEventType.Joystick, joyEv.Type);
         Assert.Equal("right", joyEv.Target);
